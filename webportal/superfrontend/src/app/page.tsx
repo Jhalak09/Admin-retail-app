@@ -3,15 +3,25 @@ import { useEffect, useState } from 'react';
 import React from 'react';
 import Image from 'next/image';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 export default function HomePage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter(); 
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle login logic here
     console.log('Login attempted with:', email, password);
+    // axios.post('http://localhost:3000/api/login', { email, password })
+    //   .then(response => {
+    //     console.log('Login successful:', response.data);
+    //   })
+    //   .catch(error => {
+    //     console.error('Login failed:', error);
+    //   });
+    router.push('/dashboard');
   };
 
   return (

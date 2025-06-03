@@ -1,0 +1,170 @@
+web portals
+
+
+/project-root
+│
+├── /apps
+│   ├── superadmin-panel/      (Next.js)
+│   ├── admin-dashboard/       (React.js)
+│   └── retailer-portal/       (React.js or Vue.js)
+│
+├── /backend                  (Node.js + Express API)
+│   ├── controllers/
+│   ├── routes/
+│   ├── services/             (Tally sync, PDF gen)
+│   └── models/
+│
+├── /shared
+│   └── components/           (shared UI)
+│
+└── package.json (workspace controlled)
+
+
+
+mobile application
+
+Application_mobile/
+│
+├── backend-springboot/                       # Spring Boot REST API Server
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/inventory/
+│   │   │   │       ├── config/              # Security config, Swagger config, Redis config
+│   │   │   │       │   ├── SecurityConfig.java
+│   │   │   │       │   ├── SwaggerConfig.java
+│   │   │   │       │   └── RedisConfig.java
+│   │   │   │       ├── controller/          # REST API Controllers
+│   │   │   │       │   ├── AuthController.java
+│   │   │   │       │   ├── AdminController.java
+│   │   │   │       │   ├── ProductController.java
+│   │   │   │       │   ├── InvoiceController.java
+│   │   │   │       │   └── FeedbackController.java
+│   │   │   │       ├── dto/                 # Request/Response DTOs
+│   │   │   │       │   ├── AuthRequest.java
+│   │   │   │       │   ├── ProductDTO.java
+│   │   │   │       │   ├── RetailerDTO.java
+│   │   │   │       │   └── InvoiceRequest.java
+│   │   │   │       ├── entity/              # JPA Entities
+│   │   │   │       │   ├── User.java
+│   │   │   │       │   ├── Product.java
+│   │   │   │       │   ├── Store.java
+│   │   │   │       │   ├── Invoice.java
+│   │   │   │       │   ├── WalkInCustomer.java
+│   │   │   │       │   └── Feedback.java
+│   │   │   │       ├── exception/           # Global Exception Handling
+│   │   │   │       │   ├── GlobalExceptionHandler.java
+│   │   │   │       │   ├── ResourceNotFoundException.java
+│   │   │   │       │   └── InvalidRequestException.java
+│   │   │   │       ├── repository/          # Spring Data JPA Repositories
+│   │   │   │       │   ├── UserRepository.java
+│   │   │   │       │   ├── ProductRepository.java
+│   │   │   │       │   ├── InvoiceRepository.java
+│   │   │   │       │   ├── WalkInRepository.java
+│   │   │   │       │   └── FeedbackRepository.java
+│   │   │   │       ├── security/            # JWT & Auth filters
+│   │   │   │       │   ├── JwtTokenProvider.java
+│   │   │   │       │   ├── JwtAuthenticationFilter.java
+│   │   │   │       │   └── CustomUserDetailsService.java
+│   │   │   │       ├── service/             # Business logic
+│   │   │   │       │   ├── AuthService.java
+│   │   │   │       │   ├── ProductService.java
+│   │   │   │       │   ├── InvoiceService.java
+│   │   │   │       │   ├── TallySyncService.java
+│   │   │   │       │   └── BannerService.java
+│   │   │   │       ├── tally/               # Tally XML Sync & Parsing
+│   │   │   │       │   ├── TallyXmlParser.java
+│   │   │   │       │   └── TallySyncScheduler.java
+│   │   │   │       └── util/                # Utility classes
+│   │   │   │           ├── PdfGenerator.java
+│   │   │   │           ├── ImageUtils.java
+│   │   │   │           └── FileStorageUtil.java
+│   │   └── resources/
+│   │       ├── application.yml
+│   │       ├── static/
+│   │       └── templates/
+│   ├── test/
+│   │   └── com/inventory/...
+│   ├── Dockerfile
+│   ├── pom.xml
+│   └── README.md
+│
+├── admin-pwa/                              # React.js Admin PWA
+│   ├── public/
+│   │   ├── index.html
+│   │   ├── manifest.json
+│   │   └── icons/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Sidebar.jsx
+│   │   │   └── InputField.jsx
+│   │   ├── pages/
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── Retailers.jsx
+│   │   │   ├── Products.jsx
+│   │   │   ├── CRM.jsx
+│   │   │   ├── Invoices.jsx
+│   │   │   └── Feedback.jsx
+│   │   ├── services/
+│   │   │   ├── api.js
+│   │   │   ├── authService.js
+│   │   │   └── productService.js
+│   │   ├── store/
+│   │   │   ├── index.js
+│   │   │   └── slices/
+│   │   │       └── productSlice.js
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── tailwind.config.js
+│   ├── vite.config.js
+│   ├── package.json
+│   ├── Dockerfile
+│   └── README.md
+│
+├── retailer-app-flutter/                  # Flutter Retailer Mobile App
+│   ├── android/
+│   ├── ios/
+│   ├── assets/
+│   ├── lib/
+│   │   ├── models/
+│   │   │   ├── product.dart
+│   │   │   ├── invoice.dart
+│   │   │   └── user.dart
+│   │   ├── screens/
+│   │   │   ├── home_screen.dart
+│   │   │   ├── product_detail_screen.dart
+│   │   │   ├── cart_screen.dart
+│   │   │   ├── feedback_screen.dart
+│   │   │   └── invoice_screen.dart
+│   │   ├── services/
+│   │   │   ├── api_service.dart
+│   │   │   └── notification_service.dart
+│   │   ├── widgets/
+│   │   │   ├── product_card.dart
+│   │   │   ├── search_bar.dart
+│   │   │   └── banner_slider.dart
+│   │   └── main.dart
+│   ├── pubspec.yaml
+│   └── README.md
+│
+├── docs/                                   # Technical specs and design docs
+│   ├── api-specs/
+│   │   ├── swagger.yaml
+│   │   └── postman-collection.json
+│   ├── db-diagrams/
+│   │   └── er-diagram.png
+│   ├── ui-wireframes/
+│   │   └── admin-pwa-screens.pdf
+│   └── README.md
+│
+├── .github/
+│   └── workflows/
+│       ├── backend-ci.yml
+│       ├── admin-pwa-ci.yml
+│       └── retailer-ci.yml
+│
+├── .gitignore
+├── README.md
+└── LICENSE
