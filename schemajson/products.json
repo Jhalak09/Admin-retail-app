@@ -1,0 +1,13 @@
+[
+  {
+    "pid": "p001",
+    "pname": "Wireless Mouse",
+    "description": "Ergonomic wireless mouse with 1600 DPI resolution.",
+    "price": 25.99,
+    "quantity": 150,
+    "pimage": "https://example.com/images/wireless_mouse.jpg",
+    "userid": "u001",
+    "created_stamp": "2025-06-04T10:00:00Z",
+    "category": "Electronics"
+  }
+]

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import Image from 'next/image';
 
 export default function AdminDashboard() {
@@ -10,7 +10,33 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
   const [showAddProductModal, setShowAddProductModal] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const itemsPerPage = 5;
+
+  // Add click outside handler for profile menu
+  const profileMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+        setShowProfileMenu(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleProfileClick = () => {
+    setShowProfileMenu(!showProfileMenu);
+  };
+
+  const handleLogout = () => {
+    // Add logout logic here
+    router.push('/');
+  };
 
   // Function to handle file export
   const handleExport = () => {
@@ -215,11 +241,45 @@ export default function AdminDashboard() {
                   className="w-64 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
                 />
               </div>
-              <button className="ml-4 p-2 rounded-full hover:bg-gray-100">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </button>
+              <div className="relative ml-4" ref={profileMenuRef}>
+                <button
+                  onClick={handleProfileClick}
+                  className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </button>
+                
+                {/* Profile Dropdown Menu */}
+                {showProfileMenu && (
+                  <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                    <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+                      <a
+                        href="/admin-dashboard/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        role="menuitem"
+                      >
+                        Your Profile
+                      </a>
+                      <a
+                        href="/admin-dashboard/settings"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        role="menuitem"
+                      >
+                        Settings
+                      </a>
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        role="menuitem"
+                      >
+                        Sign out
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -234,8 +294,8 @@ export default function AdminDashboard() {
               <h1 className="text-2xl font-semibold text-gray-900">Products</h1>
               <p className="mt-1 text-sm text-gray-600">Manage your products and view their sales performance.</p>
             </div>
-            <div className="flex space-x-4">
-              <div className="relative">
+            <div className="flex items-center space-x-4">
+              <div>
                 <input
                   type="file"
                   accept=".csv"
@@ -245,20 +305,20 @@ export default function AdminDashboard() {
                 />
                 <label
                   htmlFor="file-upload"
-                  className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer"
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                 >
                   Import CSV
                 </label>
               </div>
               <button
                 onClick={handleExport}
-                className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               >
                 Export CSV
               </button>
               <button
                 onClick={() => setShowAddProductModal(true)}
-                className="px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-gray-900 hover:bg-gray-800"
+                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
               >
                 Add Product
               </button>
@@ -414,10 +474,20 @@ export default function AdminDashboard() {
               <form onSubmit={(e) => {
                 e.preventDefault();
                 const formData = new FormData(e.currentTarget);
+                const imageFile = formData.get('image') as File;
+                
+                // Create object URL for preview if image is selected
+                const imageUrl = imageFile ? URL.createObjectURL(imageFile) : '';
+                
                 handleAddProduct({
-                  name: formData.get('name'),
-                  price: formData.get('price'),
-                  status: formData.get('status'),
+                  pname: formData.get('pname'),
+                  description: formData.get('description'),
+                  price: Number(formData.get('price')),
+                  quantity: Number(formData.get('quantity')),
+                  pimage: imageUrl,
+                  category: formData.get('category'),
+                  created_stamp: new Date().toISOString(),
+                  imageFile // Pass the actual file for upload
                 });
               }}>
                 <div className="space-y-4">
@@ -425,8 +495,17 @@ export default function AdminDashboard() {
                     <label className="block text-sm font-medium text-gray-700">Product Name</label>
                     <input
                       type="text"
-                      name="name"
+                      name="pname"
                       required
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-500 focus:border-gray-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea
+                      name="description"
+                      required
+                      rows={3}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-500 focus:border-gray-500"
                     />
                   </div>
@@ -437,19 +516,56 @@ export default function AdminDashboard() {
                       name="price"
                       required
                       step="0.01"
+                      min="0"
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-500 focus:border-gray-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Status</label>
-                    <select
-                      name="status"
+                    <label className="block text-sm font-medium text-gray-700">Quantity</label>
+                    <input
+                      type="number"
+                      name="quantity"
+                      required
+                      min="0"
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-500 focus:border-gray-500"
-                    >
-                      <option value="Active">Active</option>
-                      <option value="Draft">Draft</option>
-                      <option value="Archived">Archived</option>
-                    </select>
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Product Image</label>
+                    <div className="mt-1 flex items-center">
+                      <div className="w-full">
+                        <label className="cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                          <span>Upload Image</span>
+                          <input
+                            type="file"
+                            name="image"
+                            accept="image/*"
+                            required
+                            className="sr-only"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                // You can add preview logic here if needed
+                                console.log('Image selected:', file.name);
+                              }
+                            }}
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    <p className="mt-1 text-sm text-gray-500">
+                      PNG, JPG, GIF up to 10MB
+                    </p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Category</label>
+                    <input
+                      type="text"
+                      name="category"
+                      required
+                      placeholder="e.g., Electronics"
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-500 focus:border-gray-500"
+                    />
                   </div>
                 </div>
                 <div className="mt-5 flex justify-end space-x-3">

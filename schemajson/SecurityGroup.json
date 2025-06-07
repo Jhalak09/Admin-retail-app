@@ -1,0 +1,17 @@
+[
+  {
+    "groupid": 1,
+    "role": "superadmin",
+    "description": "top in hierarchy"
+  },
+  {
+    "groupid": 2,
+    "role": "admin",
+    "description": "2nd in hierarchy under superadmin"
+  },
+  {
+    "groupid": 3,
+    "role": "retailer",
+    "description": "have minimal access only to view things"
+  }
+]

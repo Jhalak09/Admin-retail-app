@@ -153,31 +153,11 @@ export default function Retailers() {
                     e.preventDefault();
                     const formData = new FormData(e.currentTarget);
                     handleAddRetailer({
-                      name: formData.get('name'),
-                      owner: formData.get('owner'),
                       email: formData.get('email'),
-                      phone: formData.get('phone'),
+                      groupid: formData.get('groupid'),
                     });
                   }}>
                     <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">Store Name</label>
-                        <input
-                          type="text"
-                          name="name"
-                          required
-                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-500 focus:border-gray-500"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">Owner Name</label>
-                        <input
-                          type="text"
-                          name="owner"
-                          required
-                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-500 focus:border-gray-500"
-                        />
-                      </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700">Email</label>
                         <input
@@ -188,13 +168,14 @@ export default function Retailers() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Phone</label>
-                        <input
-                          type="tel"
-                          name="phone"
+                        <label className="block text-sm font-medium text-gray-700">Group ID</label>
+                        <select
+                          name="groupid"
                           required
                           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-gray-500 focus:border-gray-500"
-                        />
+                        >
+                          <option value="3">3</option>
+                        </select>
                       </div>
                     </div>
                     <div className="mt-5 flex justify-end space-x-3">

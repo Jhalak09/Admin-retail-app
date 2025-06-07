@@ -1,0 +1,26 @@
+[
+  {
+    "permission_id": "supercontrol",
+    "description": "provide access and revoke from admins, create and remove admins"
+  },
+  {
+    "permission_id": "admincontrol",
+    "description": "provide access and revoke from retailers, create and remove retailers"
+  },
+  {
+    "permission_id": "createproduct",
+    "description": "add product"
+  },
+  {
+    "permission_id": "deleteproduct",
+    "description": "remove product"
+  },
+  {
+    "permission_id": "updateproduct",
+    "description": "edit products details"
+  },
+  {
+    "permission_id": "readproduct",
+    "description": "view products only"
+  }
+]

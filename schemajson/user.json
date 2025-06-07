@@ -1,0 +1,29 @@
+[
+  {
+    "userid": "u001",
+    "name": "Superadmin",
+    "email": "alice@company.com",
+    "password": "j",
+    "phonenumber": "1234567890",
+    "created_stamp": "2025-06-04T10:00:00Z",
+    "city": "Mumbai"
+  },
+  {
+    "userid": "u002",
+    "name": "Bob Admin",
+    "email": "bob@company.com",
+    "password": "hashed_password_2",
+    "phonenumber": "0987654321",
+    "created_stamp": "2025-06-04T10:05:00Z",
+    "city": "Delhi"
+  },
+  {
+    "userid": "u003",
+    "name": "Charlie Retailer",
+    "email": "charlie@company.com",
+    "password": "hashed_password_3",
+    "phonenumber": "1112223333",
+    "created_stamp": "2025-06-04T10:10:00Z",
+    "city": "Bangalore"
+  }
+]

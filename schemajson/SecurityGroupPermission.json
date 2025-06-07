@@ -1,0 +1,50 @@
+[
+  {
+    "groupid": 1,
+    "permission_id": "supercontrol"
+  },
+  {
+    "groupid": 1,
+    "permission_id": "admincontrol"
+  },
+  {
+    "groupid": 1,
+    "permission_id": "createproduct"
+  },
+  {
+    "groupid": 1,
+    "permission_id": "deleteproduct"
+  },
+  {
+    "groupid": 1,
+    "permission_id": "updateproduct"
+  },
+  {
+    "groupid": 1,
+    "permission_id": "readproduct"
+  },
+  {
+    "groupid": 2,
+    "permission_id": "admincontrol"
+  },
+  {
+    "groupid": 2,
+    "permission_id": "createproduct"
+  },
+  {
+    "groupid": 2,
+    "permission_id": "deleteproduct"
+  },
+  {
+    "groupid": 2,
+    "permission_id": "updateproduct"
+  },
+  {
+    "groupid": 2,
+    "permission_id": "readproduct"
+  },
+  {
+    "groupid": 3,
+    "permission_id": "readproduct"
+  }
+]
