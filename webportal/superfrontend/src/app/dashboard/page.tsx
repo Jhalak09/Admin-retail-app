@@ -14,6 +14,8 @@ interface Admin {
 export default function DashboardPage() {
   const [admins, setAdmins] = useState<Admin[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showAddAdminModal, setShowAddAdminModal] = useState(false);
+  const [newAdmin, setNewAdmin] = useState({ name: '', email: '' });
 
   // Mock data - Replace with actual API call
   useEffect(() => {
@@ -23,6 +25,21 @@ export default function DashboardPage() {
     ];
     setAdmins(mockAdmins);
   }, []);
+
+  const handleAddAdmin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Add new admin logic here
+    const newAdminData: Admin = {
+      id: (admins.length + 1).toString(),
+      ...newAdmin,
+      status: 'active',
+      productsCount: 0,
+      retailersCount: 0
+    };
+    setAdmins([...admins, newAdminData]);
+    setNewAdmin({ name: '', email: '' });
+    setShowAddAdminModal(false);
+  };
 
   const filteredAdmins = admins.filter(admin => 
     admin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -65,16 +82,72 @@ export default function DashboardPage() {
         <div className="max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-4xl font-bold">Admin Management</h1>
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search admins..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#A8E0D8] focus:border-transparent outline-none"
-              />
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search admins..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#A8E0D8] focus:border-transparent outline-none"
+                />
+              </div>
+              <button
+                onClick={() => setShowAddAdminModal(true)}
+                className="px-6 py-2 bg-[#A8E0D8] text-black rounded-xl hover:bg-[#97CDC5] transition-colors"
+              >
+                Add Admin
+              </button>
             </div>
           </div>
+
+          {/* Add Admin Modal */}
+          {showAddAdminModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+              <div className="bg-white rounded-3xl p-8 w-full max-w-md">
+                <h2 className="text-2xl font-bold mb-6">Add New Admin</h2>
+                <form onSubmit={handleAddAdmin}>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                      <input
+                        type="text"
+                        value={newAdmin.name}
+                        onChange={(e) => setNewAdmin({ ...newAdmin, name: e.target.value })}
+                        required
+                        className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#A8E0D8] focus:border-transparent outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                      <input
+                        type="email"
+                        value={newAdmin.email}
+                        onChange={(e) => setNewAdmin({ ...newAdmin, email: e.target.value })}
+                        required
+                        className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#A8E0D8] focus:border-transparent outline-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-6 flex justify-end gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setShowAddAdminModal(false)}
+                      className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-6 py-2 bg-[#A8E0D8] text-black rounded-xl hover:bg-[#97CDC5] transition-colors"
+                    >
+                      Add Admin
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
 
           {/* Admin List */}
           <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
