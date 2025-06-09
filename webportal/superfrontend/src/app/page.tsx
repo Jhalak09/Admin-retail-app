@@ -4,25 +4,45 @@ import React from 'react';
 import Image from 'next/image';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { jwtDecode } from 'jwt-decode';
 
 export default function HomePage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter(); 
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Login attempted with:', email, password);
-    // axios.post('http://localhost:3000/api/login', { email, password })
-    //   .then(response => {
-    //     console.log('Login successful:', response.data);
-    //   })
-    //   .catch(error => {
-    //     console.error('Login failed:', error);
-    //   });
-    router.push('/dashboard');
+    try {
+      const response = await axios.post('http://localhost:4000/auth/loginSA', {
+        email,
+        password,
+      });
+      
+      const token = response.data.access_token;
+      if (token) {
+        const decoded = jwtDecode(token);
+        const id = (decoded.sub);
+        console.log(id);
+      localStorage.setItem('token', token);
+      localStorage.setItem('userid', id || '');
+      }
+      toast.success("Login successful!");
+      router.push('/dashboard');
+    } catch (error: any) {
+      const message = error.response?.data?.message;
+  
+      if (message === "Invalid credentials") {
+        toast.error("Incorrect email or password.");
+      } else if (message === "Not authorized as Super Admin") {
+        toast.error("Access denied. Super Admins only.");
+      } else {
+        toast.error(message || "An unexpected error occurred.");
+      }
+    }
   };
+  
 
   return (
     <main className="min-h-screen bg-white p-8 md:p-16">
